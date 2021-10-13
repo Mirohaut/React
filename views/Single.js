@@ -25,9 +25,9 @@ const Single = ({route}) => {
   const getLikes = async () => {
     const token = await AsyncStorage.getItem('userToken');
     const result = await getFavouritesByFileId(params.file_id, token);
-    console.log('getlikes', result.length); // näyttää tykkäykset
-    setLikes(likes.length);
-    console.log('userID', result[0].user_id, ownerInfo.user_id); // Näkyykö buttoni// TODO: use api hooks to get favourites
+    // console.log('getlikes', result.length); // näyttää tykkäykset
+    setLikes(result.length);
+    // console.log('userID', result[0].user_id, ownerInfo.user_id); // Näkyykö buttoni// TODO: use api hooks to get favourites
     // setLikes()
     // set the value of iAmLikingIt
   };
@@ -89,12 +89,17 @@ const Single = ({route}) => {
         {/* TODO: show like or dislike button depending on the current like status,
         calculate like count for a file */}
         {iAmLikingIt ? (
-          <Button title="Like" onPress={likeThis} />
+          <Button
+            title="Tykkää"
+            onPress={() => {
+              setUpdateLikes(likeThis + 1);
+            }}
+          />
         ) : (
           <Button
             title="Unlike"
             onPress={() => {
-              // use api hooks to DELETE a favourite
+              setIAmLikingIt(likeThis - 1);
             }}
           />
         )}
